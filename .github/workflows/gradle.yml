@@ -41,7 +41,7 @@ jobs:
       run: echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application.properties
 
     - name: Build with Gradle
-      run: chmod +x ./gradlew build
+      run: chmod +x ./gradlew
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE_NAME }}:latest
