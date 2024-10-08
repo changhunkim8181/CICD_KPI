@@ -1,0 +1,10 @@
+ersion: '3'
+services:
+
+  web:
+    container_name: web
+    image: song229/springboot-github-actions-test
+    expose:
+      - 8080
+    ports:
+      - 8080:8080 
