@@ -71,7 +71,8 @@ jobs:
         script: |
          sudo docker rm -f $(docker ps -qa)
          sudo docker pull ${{ env.DOCKER_HUB }}:latest
-         docker-compose up -d
+         docker-compose up --build -d
+         docker-compose up
          docker image prune -f
    
 

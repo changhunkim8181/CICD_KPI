@@ -1,4 +1,4 @@
-ersion: '3'
+version: '3'
 services:
 
   web:
@@ -7,4 +7,4 @@ services:
     expose:
       - 8080
     ports:
-      - 8080:8080 
+      - 8080:8080
