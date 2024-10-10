@@ -68,6 +68,7 @@ jobs:
         host: ${{ env.EC2_HOST }}
         username: ${{ env.EC2_SSH_USER }}
         key: ${{ env.PRIVATE_KEY }}
+        port: 22
          
     - name: Docker rm -f
       run: sudo docker rm -f $(docker ps -qa)
