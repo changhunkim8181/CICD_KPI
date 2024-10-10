@@ -68,13 +68,21 @@ jobs:
         host: ${{ env.EC2_HOST }}
         username: ${{ env.EC2_SSH_USER }}
         key: ${{ env.PRIVATE_KEY }}
-        script: |
-         sudo docker rm -f $(docker ps -qa)
-         sudo docker pull ${{ env.DOCKER_HUB }}:latest
-         docker-compose down
-         docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
-         docker-compose -f /home/ubuntu/docker-compose.yml up -d
-         docker image prune -f
+         
+    - name: Docker rm -f
+      run: sudo docker rm -f $(docker ps -qa)
+
+    - name: Docker Hub Pull
+      run: sudo docker pull ${{ env.DOCKER_HUB }}:latest
+    
+    - name: Docker Compose Down
+      run: docker-compose down
+    
+    - name: Docker Compose Build
+      run: docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
+      
+    - name: Docker Compose Up
+      run: docker-compose -f /home/ubuntu/docker-compose.yml up -d
   
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
