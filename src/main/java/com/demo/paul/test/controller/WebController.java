@@ -1,13 +1,13 @@
-package com.paul.test.controller;
+package com.demo.paul.test.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class WebController {
 
-    @GetMapping("/")
+    @GetMapping(path="/paul")
     public String home(Model model) {
         model.addAttribute("message", "Hello, Spring Boot!");
         return "index"; // templates/index.html로 이동
