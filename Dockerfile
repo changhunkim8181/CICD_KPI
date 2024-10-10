@@ -1,7 +1,5 @@
 FROM openjdk:17-jdk
-ARG JAR_FILE=build/libs/*.jar
-
-COPY build/libs/*.jar cicd.jar
-ENTRYPOINT ["java","-jar","/cicd.jar"]
+COPY build/libs/*.war demo-0.0.1-SNAPSHOT.war
+ENTRYPOINT ["java","-jar","/demo-0.0.1-SNAPSHOT.war"]
 
 RUN ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
