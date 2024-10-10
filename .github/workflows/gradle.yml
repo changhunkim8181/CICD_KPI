@@ -70,7 +70,7 @@ jobs:
         key: ${{ env.PRIVATE_KEY }}
         script: |
          sudo docker rm -f $(docker ps -qa)
-         sudo docker pull ${{ env.DOCKER_HUB }}
+         sudo docker pull ${{ env.DOCKER_HUB }}:latest
          docker-compose up -d
          docker image prune -f
    

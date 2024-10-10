@@ -3,7 +3,7 @@ services:
 
   web:
     container_name: web
-    image: song229/springboot-github-actions-test
+    image: sppaul/cicd:latest
     expose:
       - 8080
     ports:
