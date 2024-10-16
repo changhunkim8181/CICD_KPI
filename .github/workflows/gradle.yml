@@ -17,7 +17,7 @@ env:
   CONTAINER_NAME: container
   DOCKER_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-#github actions에는 여러개 Job으로 구성이 가능하다 아래의 코드는 build-and-push-docker, deploy-to-ec2, dependency-submission 3개의 Job로 구성 되어 있다
+#github actions에는 여러개 Job으로 구성이 가능하다 아래의 코드는 build-and-push-docker, deploy-to-ec2 2개의 Job로 구성 되어 있다
 jobs:
   build-and-push-docker :
 
@@ -43,7 +43,29 @@ jobs:
       run: echo "${{ secrets.PROPERTIES }}" > ./src/main/resources/application.properties
 
     - name: Build with Gradle authorization #gradlew 권한부여
-      run: chmod +x ./gradlew 
+      run: chmod +x ./gradlew
+
+    - name: Run unit tests
+      run: ./gradlew test
+
+    - name: Upload unit test HTML report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: unit-test-report
+        path: ${{ github.workspace }}/build/reports/tests/test/
+
+    - name: publish unit test results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: ${{ github.workspace }}/build/test-results/test/TEST-*.xml
+
+    - name: add comments to a pull request
+      uses: mikepenz/action-junit-report@v4
+      if: github.event_name == 'pull_request' && always()
+      with:
+        report_paths: ${{ github.workspace }}/build/test-results/test/TEST-*.xml
     
     - name: Build with Gradle
       run: ./gradlew build
