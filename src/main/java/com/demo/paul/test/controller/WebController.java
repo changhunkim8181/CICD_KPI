@@ -10,6 +10,6 @@ public class WebController {
     @GetMapping(path="/paul")
     public String home(Model model) {
         model.addAttribute("message", "Hello, Spring Boot!");
-        return "index"; // templates/index.html로 이동
+        return "index cicd"; // templates/index.html로 이동
     }
 }
