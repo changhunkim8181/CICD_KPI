@@ -85,7 +85,7 @@ jobs:
          echo "Login to Docker Hub using Access Token"
          echo "${{ env.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
          echo "Build the Docker image"
-         docker build . --file Dockerfile --tag ${{ env.DOCKER_HUB }}:latest
+         docker build . --file ./Dockerfile --tag ${{ env.DOCKER_HUB }}:latest
          echo "Push the Docker image"
          docker push ${{ env.DOCKER_HUB }}:latest
          sudo docker rm -f $(docker ps -qa)
