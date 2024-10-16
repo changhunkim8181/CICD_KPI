@@ -23,8 +23,7 @@ jobs:
 
     #runs-on이란 해당 actions을 어떤 환경에서 실행시킬지에 대한 값을 입력하는 인자로, github actions를 이용하려면 꼭 필요한 인자이다, 환경이란 OS를 말한다.
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
