@@ -1,17 +1,14 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
-
+#Action 이름을 설정할수 있다. "Java CI with Gradle" 이름으로 설정하면 GitHub Action 대시보드에 설정된 이름으로 Action목록에 표시된다.
 name: Java CI with Gradle
 
-#on: workflow_dispatch
+#아래는 Event를 정의 할수 있다 다른말로 하면 워크플로가 시작되는 트리거를 말한다
+#아래 코드는 main 브렌치에 push될때 워크플로가 동작된다
 on:
   push:
     branches: [main]
 
+#아래의 env는 공통으로 쓸 값들을 전역변수처럼 사용할수 있다
+#env로 정의한 값들은 \$\{{ env.DOCKER_TOKEN }} 이렇게 사용이 가능하다
 env:
   EC2_HOST: ${{ secrets.HOST }}
   EC2_SSH_USER: ubuntu
@@ -20,9 +17,11 @@ env:
   CONTAINER_NAME: container
   DOCKER_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+#github actions에는 여러개 Job으로 구성이 가능하다 아래의 코드는 build-and-push-docker, deploy-to-ec2, dependency-submission 3개의 Job로 구성 되어 있다
 jobs:
   build-and-push-docker :
 
+    #runs-on이란 해당 actions을 어떤 환경에서 실행시킬지에 대한 값을 입력하는 인자로, github actions를 이용하려면 꼭 필요한 인자이다, 환경이란 OS를 말한다.
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -78,33 +77,4 @@ jobs:
          docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
          docker-compose -f /home/ubuntu/docker-compose.yml up -d
          docker image prune -f
-  
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
-
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-
-      # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-      # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+#끝
