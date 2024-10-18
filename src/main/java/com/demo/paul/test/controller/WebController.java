@@ -10,6 +10,6 @@ public class WebController {
     @GetMapping(path="/paul")
     public String home(Model model) {
         model.addAttribute("message", "Hello, Spring Boot!");
-        return "gitHub Action CI/CD Test........!!!!";
+        return "gitHub Action CI/CD Test.............!!!!";
     }
 }
