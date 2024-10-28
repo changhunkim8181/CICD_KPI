@@ -1,10 +1,9 @@
 version: 2.1
 
 jobs:
-  # Gradle Test, Build, and Push Job 정의
+
   Gradle_Test_and_Build_Push:
-    docker:
-      - image: circleci/openjdk:17-jdk
+  
     environment:
       DOCKER_USERNAME: $DOCKER_USERNAME
     
@@ -22,7 +21,7 @@ jobs:
           command: |
             curl -s "https://get.sdkman.io" | bash
             source "$HOME/.sdkman/bin/sdkman-init.sh"
-            sdk install gradle 7.3.1 # 필요한 Gradle 버전으로 설정
+            sdk install gradle 7.3.1
             
       - run:
           name: Set up application.properties
