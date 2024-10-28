@@ -45,15 +45,15 @@ jobs:
 
       - run:
           name: Login to Docker Hub
-          command: echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          command: echo "$DOCKER_HUB_TOKEN" | docker login -u $DOCKER_USERNAME --password-stdin
 
       - run:
           name: Build Docker image
-          command: docker build -t "$DOCKER_USERNAME/cicd:latest" .
+          command: docker build -t --file Dockerfile --tag $DOCKER_USERNAME/cicd:latest
 
       - run:
           name: Push Docker image
-          command: docker push "$DOCKER_USERNAME/cicd:latest"
+          command: docker push $DOCKER_USERNAME/cicd:latest
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
