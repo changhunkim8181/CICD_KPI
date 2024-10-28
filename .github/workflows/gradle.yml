@@ -4,8 +4,9 @@ name: GitHub Actions CI/CD
 #아래는 Event를 정의 할수 있다 다른말로 하면 워크플로가 시작되는 트리거를 말한다
 #아래 코드는 main 브렌치에 push될때 워크플로가 동작된다
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+#  push:
+#    branches: [main]
 
 #아래의 env는 공통으로 쓸 값들을 전역변수처럼 사용할수 있다
 #env로 정의한 값들은 \$\{{ env.DOCKER_TOKEN }} 이렇게 사용이 가능하다
