@@ -17,7 +17,12 @@ jobs:
 
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
+  test-and-deploy: # workflow 이름
     jobs:
-      - build
-      - test
+      - test  # test job
+      - deploy:
+          requires: # test가 끝나야 deploy 실행
+              - test
+          filters:
+              branches:
+                only: main # main 브랜치에 push 됐을 때만 실행
