@@ -45,15 +45,15 @@ jobs:
 
       - run:
           name: Login to Docker Hub
-          command: echo "$DOCKER_HUB_TOKEN" | docker login -u $DOCKER_USERNAME --password-stdin
+          command: echo "$DOCKER_HUB_TOKEN" | docker login -u sppaul --password-stdin
 
       - run:
           name: Build Docker image
-          command: docker build . --file Dockerfile --tag $DOCKER_USERNAME/cicd:latest
+          command: docker build /home/ubuntu/ --file Dockerfile --tag sppaul/cicd:latest
 
       - run:
           name: Push Docker image
-          command: docker push $DOCKER_USERNAME/cicd:latest
+          command: docker push sppaul/cicd:latest
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
@@ -70,7 +70,7 @@ jobs:
             chmod 400 private_key.pem
             ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$EC2_HOST \<<< 'EOF'
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull $DOCKER_USERNAME/cicd:latest
+              sudo docker pull sppaul/cicd:latest
               docker-compose down
               docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
               docker-compose -f /home/ubuntu/docker-compose.yml up -d
