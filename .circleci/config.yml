@@ -2,12 +2,12 @@ version: 2.1
 
 # 파이프라인에 필요한 환경 변수 설정
 environment:
-  EC2_HOST: $EC2_HOST
+  EC2_HOST: << pipeline.parameters.EC2_HOST >>
   EC2_SSH_USER: ubuntu
-  PRIVATE_KEY: $EC2_SSH_PRIVATE_KEY
+  PRIVATE_KEY: << pipeline.parameters.EC2_SSH_PRIVATE_KEY >>
   DOCKER_HUB: sppaul/cicd
   CONTAINER_NAME: container
-  DOCKER_TOKEN: $DOCKER_HUB_TOKEN
+  DOCKER_TOKEN: << pipeline.parameters.DOCKER_HUB_TOKEN >>
 
 parameters:
   EC2_HOST:
@@ -23,7 +23,7 @@ jobs:
     docker:
       - image: circleci/openjdk:17-jdk
     environment:
-      DOCKER_USERNAME: $DOCKER_USERNAME
+      DOCKER_USERNAME: << pipeline.parameters.DOCKER_USERNAME >>
     
     steps:
       - checkout
