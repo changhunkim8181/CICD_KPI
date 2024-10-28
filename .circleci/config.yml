@@ -1,29 +1,12 @@
 version: 2.1
 
-# 파이프라인에 필요한 환경 변수 설정
-environment:
-  EC2_HOST: << pipeline.parameters.EC2_HOST >>
-  EC2_SSH_USER: ubuntu
-  PRIVATE_KEY: << pipeline.parameters.EC2_SSH_PRIVATE_KEY >>
-  DOCKER_HUB: sppaul/cicd
-  CONTAINER_NAME: container
-  DOCKER_TOKEN: << pipeline.parameters.DOCKER_HUB_TOKEN >>
-
-parameters:
-  EC2_HOST:
-    type: string
-  EC2_SSH_PRIVATE_KEY:
-    type: string
-  DOCKER_HUB_TOKEN:
-    type: string
-
 jobs:
   # Gradle Test, Build, and Push Job 정의
   Gradle_Test_and_Build_Push:
     docker:
       - image: circleci/openjdk:17-jdk
     environment:
-      DOCKER_USERNAME: << pipeline.parameters.DOCKER_USERNAME >>
+      DOCKER_USERNAME: $DOCKER_USERNAME
     
     steps:
       - checkout
@@ -63,15 +46,15 @@ jobs:
 
       - run:
           name: Login to Docker Hub
-          command: echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          command: echo "$DOCKER_HUB_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
       - run:
           name: Build Docker image
-          command: docker build -t "$DOCKER_HUB:latest" .
+          command: docker build -t "sppaul/cicd:latest" .
 
       - run:
           name: Push Docker image
-          command: docker push "$DOCKER_HUB:latest"
+          command: docker push "sppaul/cicd:latest"
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
@@ -84,11 +67,11 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y openssh-client
-            echo "$PRIVATE_KEY" > private_key.pem
+            echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
             chmod 400 private_key.pem
-            ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_SSH_USER@$EC2_HOST << 'EOF'
+            ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull $DOCKER_HUB:latest
+              sudo docker pull sppaul/cicd:latest
               docker-compose down
               docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
               docker-compose -f /home/ubuntu/docker-compose.yml up -d
