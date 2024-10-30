@@ -44,16 +44,12 @@ jobs:
           command: ./gradlew build
 
       - run:
-          name: Build Docker image
-          command: docker build . --file Dockerfile --tag sppaul/cicd:latest
-
-      - run:
           name: Login to Docker Hub
           command: echo "$DOCKER_HUB_TOKEN" | docker login -u sppaul --password-stdin
 
-      #- run:
-      #    name: Build Docker image
-      #    command: docker build . --file Dockerfile --tag sppaul/cicd:latest
+      - run:
+          name: Build Docker image
+          command: docker build . --file Dockerfile --tag sppaul/cicd:latest
 
       - run:
           name: Push Docker image
