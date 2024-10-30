@@ -4,7 +4,7 @@ jobs:
 
   Gradle_Test_and_Build_Push:
     docker:
-      - image: sppual/cicd:latest
+      - image: cimg/openjdk:17.0.11
 
 
     steps:
@@ -46,7 +46,10 @@ jobs:
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKER_HUB_TOKEN" | docker login -u sppaul --password-stdin
-
+          
+      - setup_remote_docker:
+          docker_layer_caching: true
+          
       - run:
           name: Build Docker image
           command: docker build -t test ./
