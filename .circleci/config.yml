@@ -45,8 +45,7 @@ jobs:
 
       - run:
           name: Build Docker image
-          command: |
-            docker docker build . --file Dockerfile --tag sppaul/cicd:latest
+          command: docker build . --file Dockerfile --tag sppaul/cicd:latest
 
       - run:
           name: Login to Docker Hub
