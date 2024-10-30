@@ -52,11 +52,11 @@ jobs:
           
       - run:
           name: Build Docker image
-          command: docker build . --file Dockerfile --tag "${DOCKER_HUB}:latest"
+          command: docker build . --file Dockerfile --tag "${DOCKER_HUB}"
 
       - run:
           name: Push Docker image
-          command: docker push "${DOCKER_HUB}:latest"
+          command: docker push "${DOCKER_HUB}"
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
