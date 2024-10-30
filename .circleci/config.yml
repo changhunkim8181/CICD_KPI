@@ -49,11 +49,11 @@ jobs:
 
       - run:
           name: Build Docker image
-          command: docker build . --file Dockerfile --tag sppaul/cicd:latest
+          command: sudo docker build . --file Dockerfile --tag sppaul/cicd:latest
 
       - run:
           name: Push Docker image
-          command: docker push sppaul/cicd:latest
+          command: sudo docker push sppaul/cicd:latest
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
