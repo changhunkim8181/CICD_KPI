@@ -4,7 +4,7 @@ jobs:
 
   Gradle_Test_and_Build_Push:
     docker:
-      - image: cimg/openjdk:17.0.11
+      - image: sppual/cicd:latest
 
 
     steps:
