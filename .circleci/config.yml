@@ -71,12 +71,12 @@ jobs:
             sudo apt-get install -y openssh-client
             echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
             chmod 600 private_key.pem
-            ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@43.201.64.163 \<<< 'EOF'
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_HOST << 'EOF'
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull sppaul/cicd:latest
+              sudo docker pull $DOCKER_HUB:latest
+              cd /home/ubuntu
               docker-compose down
-              docker-compose -f /home/ubuntu/docker-compose.yml up --build -d
-              docker-compose -f /home/ubuntu/docker-compose.yml up -d
+              docker-compose -f docker-compose.yml up --build -d
               docker image prune -f
             EOF
 workflows:
