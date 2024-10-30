@@ -71,7 +71,7 @@ jobs:
             sudo apt-get install -y openssh-client
             echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
             chmod 600 private_key.pem
-            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_HOST << 'EOF'
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_HOST \<<< 'EOF'
               sudo docker rm -f $(docker ps -qa)
               sudo docker pull $DOCKER_HUB:latest
               cd /home/ubuntu
