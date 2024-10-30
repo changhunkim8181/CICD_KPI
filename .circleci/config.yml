@@ -52,7 +52,7 @@ jobs:
           
       - run:
           name: Build Docker image
-          command: docker build . --file Dockerfile --tage ${{ env.DOCKER_HUB }}:latest
+          command: docker build . --file Dockerfile --tag ${{ env.DOCKER_HUB }}:latest
 
       - run:
           name: Push Docker image
