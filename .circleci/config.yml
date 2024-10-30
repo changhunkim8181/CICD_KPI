@@ -44,16 +44,21 @@ jobs:
           command: ./gradlew build
 
       - run:
+          name: Build Docker image
+          command: |
+            docker build -t sppaul/cicd:latest
+
+      - run:
           name: Login to Docker Hub
           command: echo "$DOCKER_HUB_TOKEN" | docker login -u sppaul --password-stdin
 
-      - run:
-          name: Build Docker image
-          command: sudo docker build . --file Dockerfile --tag sppaul/cicd:latest
+      #- run:
+      #    name: Build Docker image
+      #    command: docker build . --file Dockerfile --tag sppaul/cicd:latest
 
       - run:
           name: Push Docker image
-          command: sudo docker push sppaul/cicd:latest
+          command: docker push sppaul/cicd:latest
 
   # deploy_docker_ec2 Job 정의
   deploy_docker_ec2:
