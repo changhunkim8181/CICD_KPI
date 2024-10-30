@@ -70,7 +70,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y openssh-client
             echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
-            chmod 400 private_key.pem
+            chmod 600 private_key.pem
             ssh -i private_key.pem -o StrictHostKeyChecking=no ubuntu@$EC2_HOST \<<< 'EOF'
               sudo docker rm -f $(docker ps -qa)
               sudo docker pull sppaul/cicd:latest
