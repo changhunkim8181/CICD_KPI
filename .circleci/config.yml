@@ -49,7 +49,7 @@ jobs:
 
       - run:
           name: Build Docker image
-          command: docker build sppaul/cicd
+          command: docker build sppaul/cicd:latest
 
       - run:
           name: Push Docker image
