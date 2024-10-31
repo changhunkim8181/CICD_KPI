@@ -68,22 +68,20 @@ jobs:
           docker_layer_caching: true
     
       - run:
-          name: Deploy Docker on EC2
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y openssh-client
-            # echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
-            # chmod 600 private_key.pem
-            echo ${EC2_HOST}
-            whoami
-            ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@$EC2_HOST -T \<<< 'EOF'
-              sudo docker rm -f $(docker ps -qa)
-              sudo docker pull $DOCKER_HUB:latest
-              cd /home/ubuntu
-              docker-compose down
-              docker-compose -f docker-compose.yml up --build -d
-              docker image prune -f
-            EOF
+    name: Deploy Docker on EC2
+    command: |
+      sudo apt-get update
+      sudo apt-get install -y openssh-client
+      echo "$EC2_HOST"
+      whoami
+      ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@$EC2_HOST << "EOF"
+        sudo docker rm -f $(docker ps -qa)
+        sudo docker pull $DOCKER_HUB:latest
+        cd /home/ubuntu
+        docker-compose down
+        docker-compose -f docker-compose.yml up --build -d
+        docker image prune -f
+      EOF
 workflows:
   version: 2
   deploy:
