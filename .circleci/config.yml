@@ -64,6 +64,9 @@ jobs:
       - image: circleci/python:3.8  # EC2 배포를 위한 이미지 선택
 
     steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+    
       - run:
           name: Deploy Docker on EC2
           command: |
@@ -72,8 +75,8 @@ jobs:
             # echo "$EC2_SSH_PRIVATE_KEY" > private_key.pem
             # chmod 600 private_key.pem
             echo ${EC2_HOST}
-            echo "sh whoami"
-            ssh -o StrictHostKeyChecking=no -i home/ubuntu/.ssh/id_rsa ubuntu@$EC2_HOST -T \<<< 'EOF'
+            sh whoami
+            ssh -o StrictHostKeyChecking=no -i $HOME/ubuntu/.ssh/id_rsa ubuntu@$EC2_HOST -T \<<< 'EOF'
               sudo docker rm -f $(docker ps -qa)
               sudo docker pull $DOCKER_HUB:latest
               cd /home/ubuntu
