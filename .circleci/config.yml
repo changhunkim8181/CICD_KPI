@@ -76,7 +76,7 @@ jobs:
             # chmod 600 private_key.pem
             echo ${EC2_HOST}
             whoami
-            ssh -o StrictHostKeyChecking=no -i /home/ubuntu/.ssh/id_rsa ubuntu@$EC2_HOST -T \<<< 'EOF'
+            ssh -o StrictHostKeyChecking=no -i "${EC2_SSH_PRIVATE_KEY}" ubuntu@$EC2_HOST -T \<<< 'EOF'
               sudo docker rm -f $(docker ps -qa)
               sudo docker pull $DOCKER_HUB:latest
               cd /home/ubuntu
